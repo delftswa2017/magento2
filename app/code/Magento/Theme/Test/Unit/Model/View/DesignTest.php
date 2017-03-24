@@ -44,9 +44,9 @@ class DesignTest extends \PHPUnit_Framework_TestCase
     protected $defaultTheme = 'anyName4Theme';
 
     /**
-     * @var \Magento\Framework\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Magento\Framework\Locale\ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
      */
-    private $objectManager;
+    private $localeResolver;
 
     /**
      * @var Design::__construct
@@ -61,17 +61,17 @@ class DesignTest extends \PHPUnit_Framework_TestCase
         );
         $this->config = $this->getMockForAbstractClass(\Magento\Framework\App\Config\ScopeConfigInterface::class);
         $this->themeFactory = $this->getMock(\Magento\Theme\Model\ThemeFactory::class, ['create'], [], '', false);
-        $this->objectManager = $this->getMockForAbstractClass(\Magento\Framework\ObjectManagerInterface::class);
         $this->state = $this->getMock(\Magento\Framework\App\State::class, [], [], '', false);
         $themes = [Design::DEFAULT_AREA => $this->defaultTheme];
+        $this->localeResolver = $this->getMock(\Magento\Framework\Locale\ResolverInterface::class, [], [], '', false);
         $this->model = new Design(
             $this->storeManager,
             $this->flyweightThemeFactory,
             $this->config,
             $this->themeFactory,
-            $this->objectManager,
             $this->state,
-            $themes
+            $themes,
+            $this->localeResolver
         );
     }
 
@@ -151,13 +151,9 @@ class DesignTest extends \PHPUnit_Framework_TestCase
     {
         $locale = 'locale';
         $area = Design::DEFAULT_AREA;
-        $localeMock = $this->getMockForAbstractClass(\Magento\Framework\Locale\ResolverInterface::class);
-        $localeMock->expects($this->once())
+        $this->localeResolver->expects($this->once())
             ->method('getLocale')
             ->will($this->returnValue($locale));
-        $this->objectManager->expects($this->once())
-            ->method('get')
-            ->will($this->returnValue($localeMock));
         $this->state->expects($this->any())
             ->method('getAreaCode')
             ->willReturn($area);
