@@ -6,7 +6,6 @@
 
 namespace Magento\Theme\Model\View;
 
-use Magento\Framework\App\ObjectManager;
 use Magento\Store\Model\ScopeInterface;
 
 /**
@@ -64,11 +63,6 @@ class Design implements \Magento\Framework\View\DesignInterface
     protected $_locale;
 
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
      * @var \Magento\Framework\App\State
      */
     protected $_appState;
@@ -83,7 +77,6 @@ class Design implements \Magento\Framework\View\DesignInterface
      * @param \Magento\Framework\View\Design\Theme\FlyweightFactory $flyweightFactory
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Theme\Model\ThemeFactory $themeFactory
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Framework\App\State $appState
      * @param array $themes
      * @param \Magento\Framework\Locale\ResolverInterface $localeResolver
@@ -93,7 +86,6 @@ class Design implements \Magento\Framework\View\DesignInterface
         \Magento\Framework\View\Design\Theme\FlyweightFactory $flyweightFactory,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Theme\Model\ThemeFactory $themeFactory,
-        \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Framework\App\State $appState,
         array $themes,
         \Magento\Framework\Locale\ResolverInterface $localeResolver = null
@@ -104,7 +96,6 @@ class Design implements \Magento\Framework\View\DesignInterface
         $this->_scopeConfig = $scopeConfig;
         $this->_appState = $appState;
         $this->_themes = $themes;
-        $this->objectManager = $objectManager;
         $this->localeResolver = $localeResolver ?: ObjectManager::getInstance()
             ->get(\Magento\Framework\Locale\ResolverInterface::class);
     }
